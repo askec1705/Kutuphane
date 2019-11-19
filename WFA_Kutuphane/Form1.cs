@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework.Controls;
 using MetroFramework.Forms;
 
 namespace WFA_Kutuphane
@@ -19,12 +20,11 @@ namespace WFA_Kutuphane
         }
         void Temizle(Control control)
         {
-            dtBasimYili.Text = "";
             foreach (Control item in control.Controls)
             {
-                if (item is TextBox)
+                if (item is MetroTextBox)
                 {
-                    item.Text = null;
+                    item.Text = "";
                 }
                 else if (item is NumericUpDown)
                 {
@@ -34,16 +34,17 @@ namespace WFA_Kutuphane
                 {
                     item.Text = null;
                 }
+                else if (item is MetroDateTime)
+                {
+                    item.Text = "";
+                }
             }
         }
 
-        string[] kitapTurleri = { "Roman", "Tarih", "Mizah", "Biyografi", "Psikoloji" };
+       
         private void Form1_Load(object sender, EventArgs e)
         {
-            for (int i = 0; i < kitapTurleri.Length; i++)
-            {
-                cmbTur.Items.Add(kitapTurleri[i]);
-            }
+            cmbTur.Items.AddRange(Enum.GetNames(typeof(Tür)));
         }
 
         private void txtKitapAdi_Validating(object sender, CancelEventArgs e)
@@ -82,7 +83,7 @@ namespace WFA_Kutuphane
             book.BaskiSayisi = nmrBaskiSayisi.Text;
             book.SayfaSayisi = nmrSayfaSayisi.Text;
             book.BasimYili = dtBasimYili.Text;
-            book.Tür = cmbTur.Text;
+            book.Tür = (Tür)Enum.Parse(typeof(Tür), cmbTur.Text);
             book.ISBN_No = txtISBNNo.Text;
 
 
@@ -118,7 +119,7 @@ namespace WFA_Kutuphane
             nmrBaskiSayisi.Text = bk.BaskiSayisi;
             nmrSayfaSayisi.Text = bk.SayfaSayisi;
             dtBasimYili.Text = bk.BasimYili;
-            cmbTur.Text = bk.Tür;
+            cmbTur.Text = (string)Enum.Parse(typeof(Tür), cmbTur.Text);
             txtISBNNo.Text = bk.ISBN_No;
 
             index = lstKitaplar.SelectedIndex;
@@ -134,7 +135,7 @@ namespace WFA_Kutuphane
             bk.BaskiSayisi = nmrBaskiSayisi.Text;
             bk.SayfaSayisi = nmrSayfaSayisi.Text;
             bk.BasimYili = dtBasimYili.Text;
-            bk.Tür = cmbTur.Text;
+            bk.Tür = (Tür)Enum.Parse(typeof(Tür), cmbTur.Text);
             bk.ISBN_No = txtISBNNo.Text;
 
             lstKitaplar.Items.RemoveAt(index);
